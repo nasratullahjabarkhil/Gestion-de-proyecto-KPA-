@@ -1,19 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-diagnostico_cmmi_nivel2.py
-Herramienta consola para diagnosticar CMMI Nivel 2 (práctica).
-Versión: básica (V1) - Código hecho por el equipo.
-Autor: Tú / Equipo
-"""
+
 
 import json
 import datetime
 import os
 
-# ---------------------------
-# CONFIG: KPAs, preguntas y recomendaciones
-# ---------------------------
 
 KPAS = {
     "Gestión de requisitos": [
