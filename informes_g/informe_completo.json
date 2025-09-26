@@ -1,0 +1,101 @@
+{
+  "proyecto": "g",
+  "fecha": "2025-09-26T11:06:21.889262",
+  "resultados": [
+    {
+      "kpa": "Gestión de requisitos",
+      "porcentaje": 70.0,
+      "estado": "Parcialmente implementada",
+      "detalles": [
+        {
+          "pregunta": "¿Se documentan los requisitos funcionales y no funcionales?",
+          "respuesta": {
+            "opcion": "1",
+            "texto": "Sí",
+            "valor": 1.0
+          }
+        },
+        {
+          "pregunta": "¿Existe trazabilidad entre requisitos y entregables?",
+          "respuesta": {
+            "opcion": "1",
+            "texto": "Sí",
+            "valor": 1.0
+          }
+        },
+        {
+          "pregunta": "¿Se gestiona formalmente el cambio de requisitos?",
+          "respuesta": {
+            "opcion": "1",
+            "texto": "Sí",
+            "valor": 1.0
+          }
+        },
+        {
+          "pregunta": "¿Se revisan los requisitos con los stakeholders?",
+          "respuesta": {
+            "opcion": "2",
+            "texto": "Parcial",
+            "valor": 0.5
+          }
+        },
+        {
+          "pregunta": "¿Se almacenan los requisitos en un repositorio accesible?",
+          "respuesta": {
+            "opcion": "3",
+            "texto": "No",
+            "valor": 0.0
+          }
+        }
+      ],
+      "recomendaciones": [
+        "Formalizar la documentación completa de requisitos (funcionales y no funcionales).",
+        "Implementar una matriz de trazabilidad entre requisitos y entregables/casos de prueba.",
+        "Establecer revisiones periódicas con stakeholders para validar requisitos.",
+        "Problema parcial: '¿Se revisan los requisitos con los stakeholders?' -> Mejorar formalidad y consistencia.",
+        "Problema detectado: '¿Se almacenan los requisitos en un repositorio accesible?' -> No implementado. Revisar y priorizar su corrección."
+      ],
+      "respuestas_raw": [
+        {
+          "pregunta": "¿Se documentan los requisitos funcionales y no funcionales?",
+          "opcion": "1",
+          "valor": 1.0,
+          "texto": "Sí"
+        },
+        {
+          "pregunta": "¿Existe trazabilidad entre requisitos y entregables?",
+          "opcion": "1",
+          "valor": 1.0,
+          "texto": "Sí"
+        },
+        {
+          "pregunta": "¿Se gestiona formalmente el cambio de requisitos?",
+          "opcion": "1",
+          "valor": 1.0,
+          "texto": "Sí"
+        },
+        {
+          "pregunta": "¿Se revisan los requisitos con los stakeholders?",
+          "opcion": "2",
+          "valor": 0.5,
+          "texto": "Parcial"
+        },
+        {
+          "pregunta": "¿Se almacenan los requisitos en un repositorio accesible?",
+          "opcion": "3",
+          "valor": 0.0,
+          "texto": "No"
+        }
+      ]
+    }
+  ],
+  "resumen": {
+    "implementadas": 0,
+    "parciales": 1,
+    "deficientes": 0,
+    "por_kpa": {
+      "Gestión de requisitos": 70.0
+    }
+  },
+  "cumple_nivel2": false
+}

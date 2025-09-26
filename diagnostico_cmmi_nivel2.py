@@ -1,131 +1,48 @@
-
-
 import json
 import datetime
-import os
+from KPAS import KPAS
+from VALOR_RESPUESTA import VALOR_RESPUESTA
+from RECOMENDACIONES_BASE import RECOMENDACIONES_BASE
+from porcentaje import estado_porcentaje
 
 
-KPAS = {
-    "Gestión de requisitos": [
-        "¿Se documentan los requisitos funcionales y no funcionales?",
-        "¿Existe trazabilidad entre requisitos y entregables?",
-        "¿Se gestiona formalmente el cambio de requisitos?",
-        "¿Se revisan los requisitos con los stakeholders?",
-        "¿Se almacenan los requisitos en un repositorio accesible?"
-    ],
-    "Planificación de proyectos": [
-        "¿Existe un plan de proyecto formalmente definido?",
-        "¿Se estiman recursos y plazos de forma realista?",
-        "¿Se identifican riesgos y planes de mitigación?",
-        "¿Se asignan responsabilidades claramente?",
-        "¿Se actualiza el plan tras cambios relevantes?"
-    ],
-    "Seguimiento y control de proyectos": [
-        "¿Se mide el avance regularmente (métricas)?",
-        "¿Se documentan desviaciones y acciones correctivas?",
-        "¿Se realizan reuniones de seguimiento periódicas?",
-        "¿Se gestionan problemas y decisiones formalmente?",
-        "¿Se hace un reporte de estado a stakeholders?"
-    ],
-    "Gestión de configuración": [
-        "¿Se usa control de versiones para el código?",
-        "¿Se documentan releases y versiones del software?",
-        "¿Existe una política de branching/merging establecida?",
-        "¿Se registran cambios y motivos de cambio?",
-        "¿Se mantienen artefactos (builds, entregables) controlados?"
-    ],
-    "Aseguramiento de calidad": [
-        "¿Se definen criterios de calidad para entregas?",
-        "¿Se realizan pruebas unitarias e integración sistemáticas?",
-        "¿Se registran y analizan defectos?",
-        "¿Se realizan revisiones y auditorías de calidad?",
-        "¿Se automatizan pruebas y/o procesos de CI?"
-    ]
-}
-
-# Recomendaciones por KPA (base)
-RECOMENDACIONES_BASE = {
-    "Gestión de requisitos": [
-        "Formalizar la documentación completa de requisitos (funcionales y no funcionales).",
-        "Implementar una matriz de trazabilidad entre requisitos y entregables/casos de prueba.",
-        "Establecer revisiones periódicas con stakeholders para validar requisitos."
-    ],
-    "Planificación de proyectos": [
-        "Elaborar un plan de proyecto formal: objetivos, alcance, cronograma y recursos.",
-        "Incluir análisis de riesgos y planes de mitigación en la planificación.",
-        "Revisar y actualizar el plan periódicamente con el equipo."
-    ],
-    "Seguimiento y control de proyectos": [
-        "Definir métricas de avance y rendimiento (por ejemplo: porcentaje de tareas completadas).",
-        "Establecer reuniones de seguimiento semanales y registrar actas.",
-        "Documentar desviaciones y acciones correctivas."
-    ],
-    "Gestión de configuración": [
-        "Adoptar control de versiones (por ejemplo Git) con una política de ramas.",
-        "Documentar cambios, versiones y releases del software.",
-        "Establecer una política de gestión de configuración y seguimiento de artefactos."
-    ],
-    "Aseguramiento de calidad": [
-        "Definir criterios de calidad para cada entrega y revisar su cumplimiento.",
-        "Implementar pruebas unitarias, de integración y registrar resultados.",
-        "Establecer un proceso para registrar y analizar defectos y acciones correctivas."
-    ]
-}
-
-# Valores numéricos para respuestas
-VALOR_RESPUESTA = {
-    "1": 1.0,    # Sí
-    "2": 0.5,    # Parcial
-    "3": 0.0     # No
-}
-
-# Etiquetas por porcentaje
-def estado_porcentaje(pct):
-    if pct >= 80:
-        return "Implementada"
-    elif pct >= 50:
-        return "Parcialmente implementada"
-    else:
-        return "Deficiente"
-
-# ---------------------------
-# Funciones principales
-# ---------------------------
-
-def pedir_respuesta(pregunta):
-    """Pide respuesta al usuario para una pregunta cerrada Sí/Parcial/No."""
+def respuesta_usuario(pregunta):
+    """Pedimos respuesta al usuario para una pregunta con estas opciones Sí/Parcial/No."""
     while True:
         print("\n" + pregunta)
         print("  1) Sí")
         print("  2) Parcial")
         print("  3) No")
         opcion = input("Elige una opción (1/2/3): ").strip()
-        if opcion in VALOR_RESPUESTA:
+        if opcion in VALOR_RESPUESTA: # cogemos el vlaor de la respuesta de VALOR_RESPUESTA
             return VALOR_RESPUESTA[opcion], opcion
-        print("Opción no válida. Intenta de nuevo.")
+        print("Opción no válida. Intenta de nuevo.") # si la opcion no es en las opciones da que no es valida
 
-def evaluar_kpa(nombre_kpa, preguntas):
-    """Realiza la evaluación interactiva para una KPA. Devuelve respuestas y metadatos."""
+def evaluar_kpa(nombre_kpa, preguntas): # recibe nombre de kpa y sus correspondientes preguntas
+    """Realizamos la evaluación para una KPA. Devolvemos respuestas y metadatos."""
     print("\n" + "="*60)
     print(f"Evaluando KPA: {nombre_kpa}")
-    print("="*60)
-    respuestas_val = []
-    respuestas_raw = []
-    detalles = []  # guardamos por pregunta la opción textual
+    print("="*60) # imprimimos 60 =
+    respuestas_val = [] # creamos lista de valor de respuestas 
+    respuestas_raw = [] # # creamos una lista de respuestas con mas detalles
+    detalles = []  # guardamos un resumen legible de cada respuesta en esta lista 
     for p in preguntas:
-        val, opcion = pedir_respuesta(p)
+        # aqui segun la respuesta del usaurio cogemos su valor 
+        val, opcion = respuesta_usuario(p)
         respuestas_val.append(val)
         respuestas_raw.append({
             "pregunta": p,
-            "opcion": opcion,                # '1','2','3'
-            "valor": val,
+            "opcion": opcion, # '1','2','3'
+            "valor": val, # valor de la respuesta (Si, Parcial, No)
             "texto": {"1":"Sí","2":"Parcial","3":"No"}[opcion]
         })
         detalles.append({"pregunta": p, "respuesta": {"opcion": opcion, "texto": {"1":"Sí","2":"Parcial","3":"No"}[opcion], "valor": val}})
-    # Calculo porcentaje
+    # Calculamos porcentaje
+    # dividimos la suma de los valores de respuesta entre el numero de respuestas  
     porcentaje = (sum(respuestas_val) / len(respuestas_val)) * 100
-    estado = estado_porcentaje(porcentaje)
-    # recomendaciones: si hay respuestas Parcial o No, incluir recomendaciones base
+    estado = estado_porcentaje(porcentaje) # verificamos el estado segun el resutlado 
+    
+    # recomendaciones si hay respuestas parcial o no, las incluimos de recomendaciones base 
     recomendaciones = generar_recomendaciones_por_respuestas(nombre_kpa, respuestas_raw)
     return {
         "kpa": nombre_kpa,
@@ -138,16 +55,14 @@ def evaluar_kpa(nombre_kpa, preguntas):
 
 def generar_recomendaciones_por_respuestas(kpa, respuestas_raw):
     """
-    Genera recomendaciones específicas en función de las respuestas.
-    Lógica simple: si alguna respuesta es 'No' o 'Parcial', añadimos recomendaciones base.
-    También podemos personalizar recomendaciones indicando qué preguntas fallan.
+    generamos una recomendacion segun las respuestas si hay parcial o no 
     """
     lista = []
-    # Añadir recomendaciones base si hay problemas
+    # añadimos recomendaciones si hay problemas (parcial, no)
     problemas = [r for r in respuestas_raw if r['opcion'] in ('2','3')]
     if problemas:
         lista.extend(RECOMENDACIONES_BASE.get(kpa, []))
-        # Añadir recomendaciones concretas por pregunta fallida
+        # Añadir recomendadion concreta para la pregunta fallida 
         for r in problemas:
             texto_preg = r['pregunta']
             if r['opcion'] == '3':
@@ -156,47 +71,46 @@ def generar_recomendaciones_por_respuestas(kpa, respuestas_raw):
                 lista.append(f"Problema parcial: '{texto_preg}' -> Mejorar formalidad y consistencia.")
     else:
         lista.append("Todas las prácticas clave parecen estar satisfechas. Mantener procesos y evidencias.")
-    # Evitar duplicados manteniendo orden
-    seen = set()
-    out = []
-    for item in lista:
-        if item not in seen:
-            out.append(item)
-            seen.add(item)
-    return out
+    # Evitamos las duplicaciones manteniendo orden 
+    visto = set()
+    salida = []
+    for contenido in lista:
+        if contenido not in visto:
+            salida.append(contenido)
+            visto.add(contenido)
+    return salida
 
 def evaluar_todas_las_kpas():
-    """Evalúa interactivamente todas las KPAs y devuelve resultados en una lista."""
+    """Evalúamos todas las kpas y devolvemos una lisa"""
     resultados = []
     for kpa, preguntas in KPAS.items():
-        res = evaluar_kpa(kpa, preguntas)
-        resultados.append(res)
+        respuestas = evaluar_kpa(kpa, preguntas)
+        resultados.append(respuestas)
     return resultados
 
 def diagnostico_general(resultados):
-    """Calcula el diagnóstico general a partir de la lista de resultados por KPA."""
-    summary = {
+    """Aqui calculamos el diagnostico a partir de la lista de resultados."""
+    resumen = {
         "implementadas": 0,
         "parciales": 0,
         "deficientes": 0,
         "por_kpa": {}
     }
     for r in resultados:
-        summary["por_kpa"][r["kpa"]] = r["porcentaje"]
+        resumen["por_kpa"][r["kpa"]] = r["porcentaje"]
         if r["estado"] == "Implementada":
-            summary["implementadas"] += 1
+            resumen["implementadas"] += 1
         elif r["estado"] == "Parcialmente implementada":
-            summary["parciales"] += 1
+            resumen["parciales"] += 1
         else:
-            summary["deficientes"] += 1
-    # Verificación nivel 2
-    cumple_nivel2 = (summary["implementadas"] == len(KPAS))
-    return summary, cumple_nivel2
+            resumen["deficientes"] += 1
+    # Verificamos el nivel 2
+    cumple_nivel2 = (resumen["implementadas"] == len(KPAS))
+    return resumen, cumple_nivel2
 
 def recomendaciones_para_alcanzar_nivel2(resultados):
     """
-    Genera recomendaciones generales para alcanzar el Nivel 2:
-    se agrupan las recomendaciones por KPA que no estén implementadas.
+    Generamos recomendaciones generales para alcanzar el Nivel 2
     """
     recomendaciones = []
     for r in resultados:
@@ -211,56 +125,12 @@ def recomendaciones_para_alcanzar_nivel2(resultados):
     return recomendaciones
 
 def conclusion_final(cumple_nivel2, summary):
-    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    ahora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if cumple_nivel2:
-        msg = f"Conclusión ({now}): El proyecto cumple el Nivel 2 de CMMI."
+        mensaje = f"Conclusión ({ahora}): El proyecto cumple el Nivel 2 de CMMI."
     else:
-        msg = f"Conclusión ({now}): El proyecto NO cumple el Nivel 2 de CMMI. Recomendado trabajar las áreas deficientes y parciales."
-    return msg
-
-# ---------------------------
-# Funciones de export / helpers
-# ---------------------------
-
-def generar_informe_text(project_name, resultados, summary, cumple_nivel2):
-    """Genera texto legible del informe completo."""
-    lines = []
-    lines.append(f"Diagnóstico CMMI Nivel 2 - Proyecto: {project_name}")
-    lines.append(f"Fecha: {datetime.datetime.now().isoformat()}")
-    lines.append("="*80)
-    for r in resultados:
-        lines.append(f"\nKPA: {r['kpa']}")
-        lines.append(f"  - Porcentaje de cumplimiento: {r['porcentaje']}%")
-        lines.append(f"  - Estado: {r['estado']}")
-        lines.append("  - Respuestas:")
-        for d in r['detalles']:
-            lines.append(f"     * {d['pregunta']} -> {d['respuesta']['texto']}")
-        lines.append("  - Recomendaciones:")
-        for rec in r['recomendaciones']:
-            lines.append(f"     - {rec}")
-    lines.append("\n" + "="*80)
-    lines.append("\nResumen general:")
-    lines.append(f"  KPAs implementadas: {summary['implementadas']}")
-    lines.append(f"  KPAs parcialmente implementadas: {summary['parciales']}")
-    lines.append(f"  KPAs deficientes: {summary['deficientes']}")
-    lines.append(f"\nVerificación nivel 2: {'Cumple' if cumple_nivel2 else 'No cumple'}")
-    lines.append("\nConclusión:")
-    lines.append(conclusion_final(cumple_nivel2, summary))
-    return "\n".join(lines)
-
-def exportar_json(path, data):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-    print(f"Informe JSON guardado en: {path}")
-
-def exportar_txt(path, text):
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(text)
-    print(f"Informe TXT guardado en: {path}")
-
-# ---------------------------
-# INTERFAZ CONSOLA - FLUJO PRINCIPAL
-# ---------------------------
+        mensaje = f"Conclusión ({ahora}): El proyecto NO cumple el Nivel 2 de CMMI. Recomendado trabajar las áreas deficientes y parciales."
+    return mensaje
 
 def menu_principal():
     print("\n" + "#"*60)
@@ -284,72 +154,95 @@ def elegir_kpa():
             return kpas[int(op)-1]
         print("Opción no válida.")
 
-def guardar_informes(project_name, resultados, summary, cumple_nivel2):
-    # Carpeta de salida
-    folder = f"informes_{project_name.replace(' ', '_')}"
-    os.makedirs(folder, exist_ok=True)
-    # JSON (estructura completa)
-    data = {
-        "proyecto": project_name,
-        "fecha": datetime.datetime.now().isoformat(),
-        "resultados": resultados,
-        "resumen": summary,
-        "cumple_nivel2": cumple_nivel2
-    }
-    json_path = os.path.join(folder, "informe_completo.json")
-    exportar_json(json_path, data)
-    # TXT (legible)
-    txt_path = os.path.join(folder, "informe_legible.txt")
-    texto = generar_informe_text(project_name, resultados, summary, cumple_nivel2)
-    exportar_txt(txt_path, texto)
-    print(f"Informes guardados en la carpeta: {folder}")
 
+def elegir_kpa():
+    print("\nSelecciona la KPA a evaluar:")
+    kpas = list(KPAS.keys())
+    
+    i = 1
+    for k in kpas:
+        print(f"  {i}) {k}")
+        i += 1
+
+    opcion = input(f"Elige (1-{len(kpas)}): ").strip()
+
+    if opcion.isdigit() and 1 <= int(opcion) <= len(kpas):
+        return kpas[int(opcion) - 1]
+    else:
+        print("Opción no válida.")
+        return elegir_kpa()
+    
 def main():
     print("Bienvenido a la herramienta de diagnóstico CMMI Nivel 2.")
-    project_name = input("Nombre del proyecto: ").strip()
-    if project_name == "":
-        project_name = "Proyecto_sin_nombre"
+    nombre_proyecto = input("Nombre del proyecto: ").strip()
+    if nombre_proyecto == "":
+        nombre_proyecto = "Proyecto_sin_nombre"
 
     while True:
         opcion = menu_principal()
         if opcion == "1":
             resultados = evaluar_todas_las_kpas()
-            summary, cumple_nivel2 = diagnostico_general(resultados)
-            texto = generar_informe_text(project_name, resultados, summary, cumple_nivel2)
+            resumen, cumple_nivel2 = diagnostico_general(resultados)
+
             print("\n" + "="*80)
-            print("INFORME RESUMIDO:")
+            print("INFORME RESUMIDO (todas las KPAs):")
             print("="*80)
-            print(texto)
-            # Guardar archivos
-            guardar = input("\n¿Deseas exportar el informe a archivos (JSON/TXT)? (s/n): ").strip().lower()
-            if guardar == "s":
-                guardar_informes(project_name, resultados, summary, cumple_nivel2)
-            else:
-                print("No se han guardado archivos.")
-            # Tras una evaluación completa, salimos o permitimos nueva ejecución
+
+            # Mostramos resultados de cada KPA
+            for r in resultados:
+                print(f"\nKPA: {r['kpa']}")
+                print(f"  - Cumplimiento: {r['porcentaje']}%")
+                print(f"  - Estado: {r['estado']}")
+                print("  - Respuestas:")
+                for d in r["detalles"]:
+                    print(f"     * {d['pregunta']} -> {d['respuesta']['texto']}")
+                print("  - Recomendaciones:")
+                for rec in r["recomendaciones"]:
+                    print(f"     - {rec}")
+
+            #  el resumen general
+            print("\n" + "="*80)
+            print("Resumen general:")
+            print(f"  KPAs implementadas: {resumen['implementadas']}")
+            print(f"  KPAs parcialmente implementadas: {resumen['parciales']}")
+            print(f"  KPAs deficientes: {resumen['deficientes']}")
+
+            print(f"\nVerificación nivel 2: {'Cumple' if cumple_nivel2 else 'No cumple'}")
+            print(conclusion_final(cumple_nivel2, resumen))
+
+            # Preguntamos si quiere repetir
             repetir = input("\n¿Quieres realizar otra evaluación? (s/n): ").strip().lower()
             if repetir != "s":
                 print("Fin. ¡Buena suerte con la práctica!")
                 break
 
+
         elif opcion == "2":
             kpa = elegir_kpa()
-            res = evaluar_kpa(kpa, KPAS[kpa])
-            resultados = [res]
-            summary, cumple_nivel2 = diagnostico_general(resultados)
-            texto = generar_informe_text(project_name, resultados, summary, cumple_nivel2)
+            respuesta = evaluar_kpa(kpa, KPAS[kpa])
+
             print("\n" + "="*60)
-            print("Informe KPA seleccionado:")
+            print(f"Informe KPA seleccionada: {kpa}")
             print("="*60)
-            print(texto)
-            guardar = input("\n¿Deseas exportar este informe (JSON/TXT)? (s/n): ").strip().lower()
-            if guardar == "s":
-                guardar_informes(project_name, resultados, summary, cumple_nivel2)
-            repetir = input("\n¿Quieres evaluar otra KPA o volver al menú principal? (v=volver, s=salir): ").strip().lower()
+            print(f"Cumplimiento: {respuesta['porcentaje']}%")
+            print(f"Estado: {respuesta['estado']}")
+            print("\nRespuestas:")
+            for d in respuesta["detalles"]:
+                print(f" - {d['pregunta']} -> {d['respuesta']['texto']}")
+            print("\nRecomendaciones:")
+            for rec in respuesta["recomendaciones"]:
+                print(f" - {rec}")
+
+            while True:
+                repetir = input("\n¿Quieres evaluar otra KPA o volver al menú principal? (v=volver, s=salir): ").strip().lower()
+                if repetir in ("v", "s"):
+                    break
+                else:
+                    print("Opción inválida. Solo puedes introducir 'v' o 's'.")
+
             if repetir == "s":
                 print("Fin. ¡Buena suerte con la práctica!")
                 break
-            # si vuelve, continúa el bucle
 
         elif opcion == "3":
             print("Saliendo. ¡Hasta luego!")

@@ -1,0 +1,31 @@
+Diagnóstico CMMI Nivel 2 - Proyecto: gestion KPA
+Fecha: 2025-09-26T10:59:20.106187
+================================================================================
+
+KPA: Gestión de requisitos
+  - Porcentaje de cumplimiento: 70.0%
+  - Estado: Parcialmente implementada
+  - Respuestas:
+     * ¿Se documentan los requisitos funcionales y no funcionales? -> Sí
+     * ¿Existe trazabilidad entre requisitos y entregables? -> No
+     * ¿Se gestiona formalmente el cambio de requisitos? -> Sí
+     * ¿Se revisan los requisitos con los stakeholders? -> Sí
+     * ¿Se almacenan los requisitos en un repositorio accesible? -> Parcial
+  - Recomendaciones:
+     - Formalizar la documentación completa de requisitos (funcionales y no funcionales).
+     - Implementar una matriz de trazabilidad entre requisitos y entregables/casos de prueba.
+     - Establecer revisiones periódicas con stakeholders para validar requisitos.
+     - Problema detectado: '¿Existe trazabilidad entre requisitos y entregables?' -> No implementado. Revisar y priorizar su corrección.
+     - Problema parcial: '¿Se almacenan los requisitos en un repositorio accesible?' -> Mejorar formalidad y consistencia.
+
+================================================================================
+
+Resumen general:
+  KPAs implementadas: 0
+  KPAs parcialmente implementadas: 1
+  KPAs deficientes: 0
+
+Verificación nivel 2: No cumple
+
+Conclusión:
+Conclusión (2025-09-26 10:59:20): El proyecto NO cumple el Nivel 2 de CMMI. Recomendado trabajar las áreas deficientes y parciales.

@@ -1,99 +1,10 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-diagnostico_cmmi_tkinter.py
-Versión con interfaz gráfica Tkinter para diagnosticar CMMI Nivel 2.
-Versión 2 (con ayuda de IA).
-"""
-
 import tkinter as tk
 from tkinter import ttk, messagebox
 import datetime
-
-# ---------------------------
-# DATOS BASE
-# ---------------------------
-
-KPAS = {
-    "Gestión de requisitos": [
-        "¿Se documentan los requisitos funcionales y no funcionales?",
-        "¿Existe trazabilidad entre requisitos y entregables?",
-        "¿Se gestiona formalmente el cambio de requisitos?",
-        "¿Se revisan los requisitos con los stakeholders?",
-        "¿Se almacenan los requisitos en un repositorio accesible?"
-    ],
-    "Planificación de proyectos": [
-        "¿Existe un plan de proyecto formalmente definido?",
-        "¿Se estiman recursos y plazos de forma realista?",
-        "¿Se identifican riesgos y planes de mitigación?",
-        "¿Se asignan responsabilidades claramente?",
-        "¿Se actualiza el plan tras cambios relevantes?"
-    ],
-    "Seguimiento y control de proyectos": [
-        "¿Se mide el avance regularmente (métricas)?",
-        "¿Se documentan desviaciones y acciones correctivas?",
-        "¿Se realizan reuniones de seguimiento periódicas?",
-        "¿Se gestionan problemas y decisiones formalmente?",
-        "¿Se hace un reporte de estado a stakeholders?"
-    ],
-    "Gestión de configuración": [
-        "¿Se usa control de versiones para el código?",
-        "¿Se documentan releases y versiones del software?",
-        "¿Existe una política de branching/merging establecida?",
-        "¿Se registran cambios y motivos de cambio?",
-        "¿Se mantienen artefactos (builds, entregables) controlados?"
-    ],
-    "Aseguramiento de calidad": [
-        "¿Se definen criterios de calidad para entregas?",
-        "¿Se realizan pruebas unitarias e integración sistemáticas?",
-        "¿Se registran y analizan defectos?",
-        "¿Se realizan revisiones y auditorías de calidad?",
-        "¿Se automatizan pruebas y/o procesos de CI?"
-    ]
-}
-
-RECOMENDACIONES = {
-    "Gestión de requisitos": [
-        "Formalizar documentación completa de requisitos.",
-        "Implementar matriz de trazabilidad.",
-        "Revisar requisitos con stakeholders periódicamente."
-    ],
-    "Planificación de proyectos": [
-        "Definir plan de proyecto formal.",
-        "Identificar riesgos y planes de mitigación.",
-        "Actualizar plan tras cambios relevantes."
-    ],
-    "Seguimiento y control de proyectos": [
-        "Definir métricas de avance.",
-        "Realizar reuniones de seguimiento semanales.",
-        "Documentar acciones correctivas."
-    ],
-    "Gestión de configuración": [
-        "Adoptar control de versiones (Git) con política clara.",
-        "Documentar versiones y releases.",
-        "Definir política de gestión de configuración."
-    ],
-    "Aseguramiento de calidad": [
-        "Definir criterios de calidad para entregas.",
-        "Implementar pruebas sistemáticas.",
-        "Registrar y analizar defectos."
-    ]
-}
-
-VALOR_RESPUESTA = {"Sí": 1, "Parcial": 0.5, "No": 0}
-
-
-def estado_porcentaje(pct):
-    if pct >= 80:
-        return "Implementada"
-    elif pct >= 50:
-        return "Parcialmente implementada"
-    return "Deficiente"
-
-
-# ---------------------------
-# CLASE APLICACIÓN TKINTER
-# ---------------------------
+from KPAS import KPAS
+from VALOR_RESPUESTA import VALOR_RESPUESTA
+from RECOMENDACIONES_BASE import RECOMENDACIONES_BASE
+from porcentaje import estado_porcentaje
 
 class DiagnosticoApp:
     def __init__(self, root):
@@ -142,8 +53,9 @@ class DiagnosticoApp:
             tk.Label(frame, text=f"{i}. {p}", anchor="w").pack(side="left")
             var = tk.StringVar(value="Sí")
             self.respuestas[p] = var
-            for opcion in ["Sí", "Parcial", "No"]:
-                tk.Radiobutton(frame, text=opcion, variable=var, value=opcion).pack(side="left", padx=5)
+            for opcion, valor in [("Sí", "1"), ("Parcial", "2"), ("No", "3")]:
+                tk.Radiobutton(frame, text=opcion, variable=var, value=valor).pack(side="left", padx=5)
+
 
         tk.Button(self.frame_preguntas, text="Calcular diagnóstico", command=self.calcular_diagnostico, fg="black").pack(pady=10)
 
@@ -156,7 +68,7 @@ class DiagnosticoApp:
         # Generar recomendaciones
         recomendaciones = []
         if estado != "Implementada":
-            recomendaciones = RECOMENDACIONES[kpa]
+            recomendaciones = RECOMENDACIONES_BASE[kpa]
 
         # Mostrar resultados
         self.text_resultado.delete("1.0", tk.END)
@@ -172,11 +84,6 @@ class DiagnosticoApp:
             self.text_resultado.insert(tk.END, " - Todas las prácticas clave están implementadas.\n")
 
         self.text_resultado.insert(tk.END, "\nFecha de diagnóstico: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-
-
-# ---------------------------
-# MAIN
-# ---------------------------
 
 if __name__ == "__main__":
     root = tk.Tk()
