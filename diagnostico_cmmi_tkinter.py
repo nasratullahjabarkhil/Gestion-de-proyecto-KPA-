@@ -231,7 +231,6 @@ class CMMIApp:
             ttk.Button(btn_frame, text="Volver al menú", command=self.frame_inicio).pack()
         else:
             ttk.Button(btn_frame, text="Volver al menú", command=self.frame_inicio).pack()
-        # también dejamos la opción de guardar si se quiere (por extensión)
 
     # --- Evaluar todas las KPAs (batch) ---
     def evaluar_todas(self):
