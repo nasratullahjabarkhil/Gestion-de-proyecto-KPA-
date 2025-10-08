@@ -1,4 +1,3 @@
-import json
 import datetime
 from KPAS import KPAS
 from VALOR_RESPUESTA import VALOR_RESPUESTA
