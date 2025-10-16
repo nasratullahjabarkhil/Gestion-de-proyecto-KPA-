@@ -145,26 +145,11 @@ def menu_principal():
 def elegir_kpa():
     print("\nSelecciona la KPA a evaluar:")
     kpas = list(KPAS.keys())
-    for i, k in enumerate(kpas, start=1):
-        print(f"  {i}) {k}")
-    while True:
-        op = input(f"Elige (1-{len(kpas)}): ").strip()
-        if op.isdigit() and 1 <= int(op) <= len(kpas):
-            return kpas[int(op)-1]
-        print("Opción no válida.")
-
-
-def elegir_kpa():
-    print("\nSelecciona la KPA a evaluar:")
-    kpas = list(KPAS.keys())
-    
     i = 1
     for k in kpas:
         print(f"  {i}) {k}")
         i += 1
-
     opcion = input(f"Elige (1-{len(kpas)}): ").strip()
-
     if opcion.isdigit() and 1 <= int(opcion) <= len(kpas):
         return kpas[int(opcion) - 1]
     else:
