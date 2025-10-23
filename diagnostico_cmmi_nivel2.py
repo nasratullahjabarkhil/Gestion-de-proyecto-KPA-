@@ -127,32 +127,6 @@ def generar_recomendaciones_por_respuestas(kpa, respuestas_raw):
             visto.add(contenido)  # Y la marco como vista
     
     return salida
-def generar_recomendaciones_por_respuestas(kpa, respuestas_raw):
-    """
-    generamos una recomendacion segun las respuestas si hay parcial o no 
-    """
-    lista = []
-    # añadimos recomendaciones si hay problemas (parcial, no)
-    problemas = [r for r in respuestas_raw if r['opcion'] in ('2','3')]
-    if problemas:
-        lista.extend(RECOMENDACIONES_BASE.get(kpa, []))
-        # Añadir recomendadion concreta para la pregunta fallida 
-        for r in problemas:
-            texto_preg = r['pregunta']
-            if r['opcion'] == '3':
-                lista.append(f"Problema detectado: '{texto_preg}' -> No implementado. Revisar y priorizar su corrección.")
-            elif r['opcion'] == '2':
-                lista.append(f"Problema parcial: '{texto_preg}' -> Mejorar formalidad y consistencia.")
-    else:
-        lista.append("Todas las prácticas clave parecen estar satisfechas. Mantener procesos y evidencias.")
-    # Evitamos las duplicaciones manteniendo orden 
-    visto = set()
-    salida = []
-    for contenido in lista:
-        if contenido not in visto:
-            salida.append(contenido)
-            visto.add(contenido)
-    return salida
 
 def evaluar_todas_las_kpas():
     """
